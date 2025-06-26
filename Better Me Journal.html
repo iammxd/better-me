@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Better Me - Lifestyle Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; scroll-behavior: smooth; }
+        h1, h2, h3, h4 { font-family: 'Lora', serif; }
+        .bg-primary { background-color: #FDF2E9; } /* Lighter, softer pink */
+        .bg-secondary { background-color: #FFAB91; } /* Soft Orange */
+        .text-accent { color: #34495E; } /* Deep Blue */
+        .btn-primary { background-color: #34495E; color: white; transition: background-color 0.3s ease; }
+        .btn-secondary { background-color: #a7bbc7; color: white; transition: background-color: 0.3s ease; }
+        .btn-primary:hover { background-color: #2C3E50; }
+        .btn-secondary:hover { background-color: #8e9a9d; }
+        .tab-active { background-color: #34495E; color: white; }
+        .section { display: none; }
+        .section.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .calendar-day { min-height: 100px; }
+        .calendar-day.other-month { background-color: #f9fafb; }
+        .calendar-day-event { font-size: 0.75rem; padding: 2px 4px; border-radius: 4px; margin-top: 2px; cursor: pointer; }
+    </style>
+</head>
+<body class="bg-primary">
+
+    <!-- Introductory Landing Page -->
+    <div id="intro-page" class="min-h-screen flex flex-col items-center justify-center p-8 text-center text-accent">
+        <div class="max-w-2xl">
+            <h1 class="text-5xl font-bold mb-4">Welcome to Your Better Me</h1>
+            <p class="text-xl mb-8">A holistic space to organize your meals, budget, fitness, and dreams. Your all-in-one lifestyle hack for a more balanced and intentional life.</p>
+            <button id="enter-app-btn" class="btn-primary py-3 px-8 rounded-lg text-lg font-semibold mb-12">Enter Your Journal</button>
+            
+            <h2 class="text-3xl font-bold mb-4">Printable Toolkit</h2>
+            <p class="mb-6">Start your journey with our collection of printable templates.</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <a href="#" class="block bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition">
+                    <svg class="w-12 h-12 mx-auto text-secondary mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <p class="font-semibold">Budget Plan</p>
+                </a>
+                <a href="#" class="block bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition">
+                    <svg class="w-12 h-12 mx-auto text-secondary mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-5a2 2 0 00-2 2v5m7 0a2 2 0 012 2v5a2 2 0 01-2 2h-5a2 2 0 01-2-2v-5a2 2 0 012-2m7 0h-5"></path></svg>
+                    <p class="font-semibold">Fitness Log</p>
+                </a>
+                <a href="#" class="block bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition">
+                     <svg class="w-12 h-12 mx-auto text-secondary mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    <p class="font-semibold">Meal Planner</p>
+                </a>
+                <a href="#" class="block bg-white p-4 rounded-lg shadow-md hover:shadow-xl transition">
+                    <svg class="w-12 h-12 mx-auto text-secondary mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                    <p class="font-semibold">Journal Pages</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Journal Content (Initially Hidden) -->
+    <div id="journal-app" class="hidden">
+        <header class="bg-secondary p-4 shadow-md sticky top-0 z-20">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-2xl md:text-3xl font-bold text-white">A Better Me</h1>
+                <nav id="tabs" class="flex flex-wrap space-x-1 md:space-x-4">
+                    <button class="tab py-2 px-3 rounded-lg text-sm md:text-base" data-target="dashboard-section">Dashboard</button>
+                    <button class="tab py-2 px-3 rounded-lg text-sm md:text-base" data-target="planner-section">Planner</button>
+                    <button class="tab py-2 px-3 rounded-lg text-sm md:text-base" data-target="journal-section">Journal</button>
+                    <button class="tab py-2 px-3 rounded-lg text-sm md:text-base" data-target="vision-board-section">Vision Board</button>
+                    <button class="tab py-2 px-3 rounded-lg text-sm md:text-base" data-target="toolkit-section">Toolkit</button>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container mx-auto p-4 md:p-8">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="section">
+                <h2 class="text-3xl font-bold text-accent mb-6">Today's Dashboard</h2>
+                 <div class="grid lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2 space-y-8">
+                        <!-- Fitness & Mood -->
+                         <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <h3 class="text-2xl font-semibold text-accent mb-4">Today's Vitals</h3>
+                            <!-- Fitness, Mood, etc. -->
+                        </div>
+                        <!-- Daily Calendar Snapshot -->
+                         <div class="bg-white p-6 rounded-lg shadow-lg">
+                            <h3 class="text-2xl font-semibold text-accent mb-4">Today's Schedule</h3>
+                            <!-- Today's events -->
+                        </div>
+                    </div>
+                    <div class="lg:col-span-1 bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-2xl font-semibold text-accent mb-4">Weekly To-Do List</h3>
+                        <!-- To-Do List Kanban -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Planner Section -->
+            <div id="planner-section" class="section">
+                <h2 class="text-3xl font-bold text-accent mb-6">Your Planner</h2>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center space-x-2">
+                             <button id="prev-month" class="p-2 rounded-full hover:bg-gray-200">&lt;</button>
+                             <h3 id="calendar-month-year" class="text-2xl font-semibold text-accent"></h3>
+                             <button id="next-month" class="p-2 rounded-full hover:bg-gray-200">&gt;</button>
+                        </div>
+                        <div>
+                             <a href="#" id="google-cal-link" target="_blank" class="btn-secondary py-2 px-4 rounded-lg text-sm">Add to Google Calendar</a>
+                        </div>
+                    </div>
+                    <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center">
+                        <!-- Calendar will be built by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Journal Section -->
+            <div id="journal-section" class="section">
+                 <div id="printable-journal" class="bg-white p-6 rounded-lg shadow-lg">
+                    <h3 class="text-xl font-semibold text-accent mb-2">Daily Reflections: <span id="current-date"></span></h3>
+                    <textarea id="journal-textarea" class="w-full h-96 p-4 border rounded-md" placeholder="Write about your day..."></textarea>
+                    <div class="flex space-x-4 mt-4">
+                        <button id="save-journal-button" class="btn-primary py-2 px-6 rounded-lg">Save</button>
+                        <button id="print-journal-button" class="btn-secondary py-2 px-6 rounded-lg">Print</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vision Board Section -->
+            <div id="vision-board-section" class="section">
+                <h2 class="text-3xl font-bold text-accent mb-6">My Vision Board</h2>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                     <p>A space to set your yearly goals, affirmations, and track your biggest dreams. Inspired by your "I Am," "I Use," "I Feel" mottos.</p>
+                     <!-- Vision board content here -->
+                </div>
+            </div>
+            
+            <!-- Toolkit Section -->
+            <div id="toolkit-section" class="section">
+                 <h2 class="text-3xl font-bold text-accent mb-6">Financial Toolkit</h2>
+                 <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <p>Resources for building financial wholeness, inspired by The Budgetnista.</p>
+                    <div class="grid md:grid-cols-2 gap-4 mt-4">
+                        <a href="#" class="p-4 border rounded-lg hover:bg-gray-50"><strong>Budget Building:</strong> Download a money list template.</a>
+                        <a href="#" class="p-4 border rounded-lg hover:bg-gray-50"><strong>Debt Management:</strong> Access a debt tracking sheet.</a>
+                        <a href="#" class="p-4 border rounded-lg hover:bg-gray-50"><strong>Credit Score:</strong> Links to free credit report tools.</a>
+                        <a href="#" class="p-4 border rounded-lg hover:bg-gray-50"><strong>Investing 101:</strong> Resources for getting started.</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- DATA STORE ---
+        let appData = {};
+        let currentDate = new Date();
+
+        // --- INITIALIZATION ---
+        function init() {
+            loadData();
+            setupEventListeners();
+            renderCalendar();
+            document.querySelector('.tab[data-target="dashboard-section"]').click();
+        }
+
+        function loadData() {
+            const savedData = localStorage.getItem('betterMeJournalDataV2');
+            appData = savedData ? JSON.parse(savedData) : {
+                calendarEvents: {},
+                weeklyTodos: { todo: [], doing: [], done: [] },
+                visionBoard: {},
+                dailyLogs: {}
+            };
+        }
+
+        function saveData() {
+            localStorage.setItem('betterMeJournalDataV2', JSON.stringify(appData));
+        }
+        
+        // --- EVENT LISTENERS ---
+        function setupEventListeners() {
+            document.getElementById('enter-app-btn').addEventListener('click', () => {
+                document.getElementById('intro-page').style.display = 'none';
+                document.getElementById('journal-app').style.display = 'block';
+            });
+
+            document.getElementById('tabs').addEventListener('click', (e) => {
+                if (e.target.classList.contains('tab')) {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('tab-active'));
+                    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                    e.target.classList.add('tab-active');
+                    const targetSection = document.getElementById(e.target.dataset.target);
+                    if(targetSection) targetSection.classList.add('active');
+                }
+            });
+            
+            document.getElementById('prev-month').addEventListener('click', () => navigateMonth(-1));
+            document.getElementById('next-month').addEventListener('click', () => navigateMonth(1));
+        }
+
+        // --- CALENDAR LOGIC ---
+        function renderCalendar() {
+            const calendarGrid = document.getElementById('calendar-grid');
+            const monthYearEl = document.getElementById('calendar-month-year');
+            if(!calendarGrid || !monthYearEl) return;
+            
+            calendarGrid.innerHTML = '';
+            monthYearEl.textContent = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            
+            const month = currentDate.getMonth();
+            const year = currentDate.getFullYear();
+            
+            const firstDayOfMonth = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            const dayHeaders = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            dayHeaders.forEach(day => {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'font-bold text-accent';
+                dayEl.textContent = day;
+                calendarGrid.appendChild(dayEl);
+            });
+
+            for (let i = 0; i < firstDayOfMonth; i++) {
+                calendarGrid.appendChild(document.createElement('div'));
+            }
+
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayEl = document.createElement('div');
+                dayEl.className = 'calendar-day border p-2';
+                dayEl.textContent = day;
+                
+                // Add event listener to add new events
+                dayEl.addEventListener('click', () => {
+                    const eventName = prompt(`Add event for ${month + 1}/${day}:`);
+                    if(eventName) {
+                        const dateKey = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+                        if(!appData.calendarEvents[dateKey]) appData.calendarEvents[dateKey] = [];
+                        appData.calendarEvents[dateKey].push({ title: eventName });
+                        saveData();
+                        renderCalendar();
+                    }
+                });
+                
+                // Render existing events
+                const dateKey = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+                if (appData.calendarEvents[dateKey]) {
+                    appData.calendarEvents[dateKey].forEach(event => {
+                        const eventEl = document.createElement('div');
+                        eventEl.className = 'calendar-day-event bg-secondary text-white';
+                        eventEl.textContent = event.title;
+                        dayEl.appendChild(eventEl);
+                    });
+                }
+                
+                calendarGrid.appendChild(dayEl);
+            }
+        }
+        
+        function navigateMonth(direction) {
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            renderCalendar();
+        }
+
+        // --- Init App ---
+        init();
+    });
+    </script>
+</body>
+</html>
